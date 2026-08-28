@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">ChatBridge</string>
+    <string name="accessibility_service_description">카카오톡 답장 전송, 뱅크샐러드 가계부 읽기, X/인스타그램/틱톡 게시글 읽기를 위한 접근성 서비스입니다.</string>
+</resources>
