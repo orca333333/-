@@ -74,12 +74,14 @@
 
 ## 빌드 방법
 
-Android Studio(최신 버전)에서 이 폴더를 열면 Gradle Wrapper가 자동 생성됩니다.
-CLI로 빌드하려면 로컬에 Gradle이 설치되어 있어야 하며(`gradle wrapper` 최초 1회 실행 후):
+Gradle Wrapper(`gradlew`, `gradlew.bat`)가 저장소에 포함되어 있어 별도로 Gradle을 설치할 필요가
+없습니다. Android Studio(최신 버전)에서 이 폴더를 열면 자동으로 동기화됩니다. CLI로 빌드하려면:
 
 ```
 ./gradlew assembleDebug
 ```
+
+(Windows는 `gradlew.bat assembleDebug`)
 
 - `minSdk` 26, `targetSdk` 34, Kotlin + Jetpack Compose + Room + WorkManager + OkHttp 사용.
 - API 키는 사용자가 설정 화면에서 직접 입력하며 `EncryptedSharedPreferences`로 기기에만 암호화 저장됩니다.
