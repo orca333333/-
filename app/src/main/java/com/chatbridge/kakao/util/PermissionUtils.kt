@@ -3,7 +3,7 @@ package com.chatbridge.kakao.util
 import android.content.Context
 import android.provider.Settings
 import androidx.core.app.NotificationManagerCompat
-import com.chatbridge.kakao.accessibility.KakaoReplyAccessibilityService
+import com.chatbridge.kakao.accessibility.BridgeAccessibilityService
 
 object PermissionUtils {
 
@@ -11,7 +11,7 @@ object PermissionUtils {
         NotificationManagerCompat.getEnabledListenerPackages(context).contains(context.packageName)
 
     fun isAccessibilityServiceEnabled(context: Context): Boolean {
-        val expected = "${context.packageName}/${KakaoReplyAccessibilityService::class.java.name}"
+        val expected = "${context.packageName}/${BridgeAccessibilityService::class.java.name}"
         val enabled = Settings.Secure.getString(
             context.contentResolver,
             Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES

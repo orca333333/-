@@ -48,7 +48,7 @@ android {
 }
 
 dependencies {
-    val composeBom = platform("androidx.compose:compose-bom:2024.06.00")
+    val composeBom = platform("androidx.compose:compose-bom:2024.09.00")
     implementation(composeBom)
 
     implementation("androidx.core:core-ktx:1.13.1")
@@ -63,10 +63,27 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
     implementation("androidx.compose.material:material-icons-extended")
+    implementation("androidx.compose.foundation:foundation")
 
     implementation("androidx.room:room-runtime:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
     kapt("androidx.room:room-compiler:2.6.1")
+
+    // Networking (YouTube Data API, Claude API, RSS) - plain OkHttp + built-in org.json/XmlPullParser,
+    // no extra parsing framework needed for the handful of calls menus 2-5 make.
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+
+    // Daily refresh jobs (news digest, KakaoTalk-style reminder notifications for BankSalad/SNS).
+    implementation("androidx.work:work-runtime-ktx:2.9.1")
+
+    // Encrypted local storage for user-supplied API keys (YouTube Data API, Claude API).
+    implementation("androidx.security:security-crypto:1.1.0-alpha06")
+
+    // Custom Tabs for opening news/SNS links.
+    implementation("androidx.browser:browser:1.8.0")
+
+    // Video thumbnails in the YouTube feed (menu 2).
+    implementation("io.coil-kt:coil-compose:2.6.0")
 
     debugImplementation("androidx.compose.ui:ui-tooling")
 }

@@ -1,10 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- KakaoTalk must be visible to this app (Android 11+ package visibility) so it can be launched
-         from the accessibility service when delivering a reply. -->
+    <!-- Menus 3 (news) and the AI title summarizer need network access; menus 2/3/5 keep no other
+         permission beyond what notification access / accessibility already grant via Settings. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- Daily "채팅방/가계부 갱신 준비됨" reminder notifications (Android 13+ requires this at runtime too). -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <!-- Apps this app must be able to see/launch (Android 11+ package visibility). -->
     <queries>
         <package android:name="com.kakao.talk" />
+        <package android:name="com.google.android.youtube" />
+        <package android:name="com.rainist.banksalad2" />
+        <package android:name="com.twitter.android" />
+        <package android:name="com.instagram.android" />
+        <package android:name="com.zhiliaoapp.musically" />
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="https" />
+        </intent>
     </queries>
 
     <application
@@ -36,10 +51,11 @@
             </intent-filter>
         </service>
 
-        <!-- Drives the KakaoTalk UI to type and send a reply. Enabled manually by the user under
-             Settings > Accessibility (no official send API exists). -->
+        <!-- Drives KakaoTalk (menu 1 replies), BankSalad (menu 5 ledger scrape) and X/Instagram/TikTok
+             (menu 4 scrape) UIs, since none of them offer an API for this. Enabled manually by the
+             user under Settings > Accessibility. -->
         <service
-            android:name=".accessibility.KakaoReplyAccessibilityService"
+            android:name=".accessibility.BridgeAccessibilityService"
             android:exported="true"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
             <intent-filter>

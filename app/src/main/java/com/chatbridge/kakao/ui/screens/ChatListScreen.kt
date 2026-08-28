@@ -1,11 +1,10 @@
 package com.chatbridge.kakao.ui.screens
 
 import android.content.Intent
-import android.provider.Settings
+import android.provider.Settings as AndroidSettings
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Modifier
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -33,6 +32,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -98,13 +98,13 @@ private fun PermissionBanner(notificationOk: Boolean, accessibilityOk: Boolean) 
             if (!notificationOk) {
                 Text("• 카카오톡 메시지를 읽으려면 '알림 접근 권한'을 켜주세요.")
                 TextButton(onClick = {
-                    context.startActivity(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))
+                    context.startActivity(Intent(AndroidSettings.ACTION_NOTIFICATION_LISTENER_SETTINGS))
                 }) { Text("알림 접근 권한 설정으로 이동") }
             }
             if (!accessibilityOk) {
                 Text("• 답장을 보내려면 '손쉬운 사용(접근성)' 권한을 켜주세요.")
                 TextButton(onClick = {
-                    context.startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
+                    context.startActivity(Intent(AndroidSettings.ACTION_ACCESSIBILITY_SETTINGS))
                 }) { Text("접근성 설정으로 이동") }
             }
         }
