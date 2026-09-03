@@ -16,3 +16,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "ChatBridge"
 include(":app")
+include(":launcher")
