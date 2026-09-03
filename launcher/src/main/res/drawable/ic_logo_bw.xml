@@ -1,0 +1,13 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="72dp"
+    android:height="72dp"
+    android:viewportWidth="72"
+    android:viewportHeight="72">
+    <!-- 홈 화면 중앙에 표시되는 기본 로고(임시 플레이스홀더): 얇은 원형 링.
+         Compose 쪽에서 ColorFilter.tint로 다크/라이트에 맞춰 색을 다시 입히므로
+         여기 fillColor는 형태(알파)만 의미가 있습니다.
+         실제 로고 이미지가 있으면 이 파일을 같은 이름(ic_logo_bw)의 벡터/PNG로 교체하면 됩니다. -->
+    <path
+        android:fillColor="#FF000000"
+        android:pathData="M36,4 C18.33,4 4,18.33 4,36 C4,53.67 18.33,68 36,68 C53.67,68 68,53.67 68,36 C68,18.33 53.67,4 36,4 Z M36,12 C49.25,12 60,22.75 60,36 C60,49.25 49.25,60 36,60 C22.75,60 12,49.25 12,36 C12,22.75 22.75,12 36,12 Z" />
+</vector>
