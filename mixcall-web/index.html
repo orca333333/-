@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>MIXCALL LAB</title>
+  <meta name="description" content="HEROINES 곡의 믹스콜을 곡별·MIX별·분류별로 찾고, 콜 플로우를 실행해 음원 구간과 AI 음성으로 연습하는 사이트">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <nav class="rail" aria-label="주요 메뉴">
+    <a class="rail-logo" href="#/" aria-label="홈">
+      <svg viewBox="0 0 32 32" width="26" height="26" aria-hidden="true"><path d="M5 24V9l7 9 7-9v15" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="25" cy="22" r="3" fill="#fff"/></svg>
+    </a>
+    <a href="#/" data-nav="songs"><span class="ri">♪</span><span>곡별</span></a>
+    <a href="#/mixes" data-nav="mixes"><span class="ri">📣</span><span>MIX</span></a>
+    <a href="#/browse" data-nav="browse"><span class="ri">◈</span><span>분류</span></a>
+    <a href="#/voice" data-nav="voice"><span class="ri">🎙</span><span>AI 음성</span></a>
+    <a href="#/guide" data-nav="guide"><span class="ri">?</span><span>가이드</span></a>
+    <button class="rail-theme" id="themeBtn" aria-label="다크/라이트 전환"><span class="ri">◐</span><span>테마</span></button>
+  </nav>
+
+  <main id="app" class="canvas" tabindex="-1"></main>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="data/mixes.js"></script>
+  <script src="data/songs.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
