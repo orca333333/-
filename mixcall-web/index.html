@@ -2,40 +2,32 @@
 <html lang="ko">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>MIXCALL LAB</title>
-  <meta name="description" content="지하아이돌 믹스콜을 곡별·믹스콜별·성격별로 찾아 배우고, AI 음성·음원·콜 가사와 함께 연습하는 사이트">
+  <meta name="description" content="HEROINES 곡의 믹스콜을 곡별·MIX별·분류별로 찾고, 콜 플로우를 실행해 음원 구간과 AI 음성으로 연습하는 사이트">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Noto+Sans+JP:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header class="topbar">
-    <div class="topbar-inner">
-      <a class="brand" href="#/">
-        <span class="brand-mark" aria-hidden="true">M</span>
-        <span>MIXCALL<b>LAB</b></span>
-      </a>
-      <nav class="nav" aria-label="주요 메뉴">
-        <a href="#/songs" data-nav="songs">곡별</a>
-        <a href="#/mixes" data-nav="mixes">믹스콜별</a>
-        <a href="#/traits" data-nav="traits">성격별</a>
-        <a href="#/voice" data-nav="voice">AI 음성</a>
-        <a href="#/editor" data-nav="editor">곡 추가</a>
-      </nav>
-      <button class="theme-btn" id="themeBtn" aria-label="다크/라이트 전환">◐</button>
-    </div>
-  </header>
+  <nav class="rail" aria-label="주요 메뉴">
+    <a class="rail-logo" href="#/" aria-label="홈">
+      <svg viewBox="0 0 32 32" width="26" height="26" aria-hidden="true"><path d="M5 24V9l7 9 7-9v15" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="25" cy="22" r="3" fill="#fff"/></svg>
+    </a>
+    <a href="#/" data-nav="songs"><span class="ri">♪</span><span>곡별</span></a>
+    <a href="#/mixes" data-nav="mixes"><span class="ri">📣</span><span>MIX</span></a>
+    <a href="#/browse" data-nav="browse"><span class="ri">◈</span><span>분류</span></a>
+    <a href="#/voice" data-nav="voice"><span class="ri">🎙</span><span>AI 음성</span></a>
+    <a href="#/guide" data-nav="guide"><span class="ri">?</span><span>가이드</span></a>
+    <button class="rail-theme" id="themeBtn" aria-label="다크/라이트 전환"><span class="ri">◐</span><span>테마</span></button>
+  </nav>
 
-  <main id="app" tabindex="-1"></main>
+  <main id="app" class="canvas" tabindex="-1"></main>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
-  <footer class="footer">
-    <p>MIXCALL LAB · 팬 자료 기반 학습용 정리입니다. 구호·박 배치는 현장마다 다르며, <span class="badge b-unverified">확인 필요</span> 표시는 원문 교차 확인 전 항목입니다.</p>
-    <p>실제 곡 음원·가사는 포함하지 않습니다. 곡은 YouTube 임베드 또는 데모 비트로 재생됩니다.</p>
-  </footer>
-
-  <script src="data.js"></script>
+  <script src="data/mixes.js"></script>
+  <script src="data/songs.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
