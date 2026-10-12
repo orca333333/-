@@ -1,0 +1,305 @@
+/* MIXCALL LAB — 믹스콜 데이터
+ * 박(beat) 단위 타이밍은 4/4박 기준의 "일반적 예시"이며, 곡·현장마다 다릅니다.
+ * confidence: 'cross'   = 복수 팬 자료에서 교차 확인
+ *             'single'  = 단일 팬 자료에서 확인
+ *             'unverified' = 일반 지식 기반, 확인 필요
+ */
+
+window.MIXCALL = (() => {
+  const TRAITS = {
+    basic:   { label: '정형·기본', emoji: '🎯', desc: '거의 모든 현장에서 통하는 표준 구호. 입문자가 가장 먼저 외울 것.' },
+    hype:    { label: '열광·하이텐션', emoji: '🔥', desc: '간주를 폭발적으로 채우는 고에너지 구호. 성량과 타이밍이 핵심.' },
+    love:    { label: '연애·고백형', emoji: '💘', desc: '아이돌에게 고백하는 형식의 구상(口上). 감정 표현 중심.' },
+    speed:   { label: '고속·테크닉', emoji: '⚡', desc: '박을 쪼개거나 길이를 조절하는 숙련자용 변형.' },
+    clap:    { label: '클랩·합의 손', emoji: '👏', desc: '손뼉과 짧은 외침으로 박을 맞추는 합의 손(合いの手).' },
+    manner:  { label: '매너 주의', emoji: '⚠️', desc: '금지하는 그룹·공연장이 있음. 현장 규칙을 먼저 확인할 것.' },
+  };
+
+  const KINDS = {
+    mix:   'MIX (믹스)',
+    kojo:  '口上 (구상)',
+    aino:  '合いの手 (합의 손)',
+    action:'동작 (오타게이 계열)',
+  };
+
+  const SPEEDS = {
+    slow:   { label: '느림', desc: '1단어 = 2박 이상' },
+    normal: { label: '보통', desc: '1단어 = 1~2박' },
+    fast:   { label: '빠름', desc: '1단어 = 반박 이하' },
+    vary:   { label: '가변', desc: '길이를 늘이거나 줄여 곡에 맞춤' },
+  };
+
+  const POSITIONS = {
+    intro:   '인트로',
+    inter1:  '1절 끝 간주',
+    inter2:  '2절 끝 간주',
+    preChorus: '사비(후렴) 직전',
+    ochisabi: '낙사비(落ちサビ) 전후',
+    any:     '곡 전반',
+  };
+
+  // words[].b = 콜 시작 기준 박 위치, len = 박 길이
+  const MIXES = [
+    {
+      id: 'standard', name: 'スタンダードMIX', ko: '스탠다드 믹스', alias: '영어 MIX · 퍼스트 MIX',
+      kind: 'mix', lang: '영어계', speed: 'normal', traits: ['basic', 'hype'],
+      positions: ['intro'], bars: 8,
+      desc: '가장 기본이 되는 MIX. 영단어처럼 들리는 7개의 구호를 순서대로 외친다. 주로 곡의 인트로에서 사용.',
+      words: [
+        { b: 0,  len: 8, ja: 'あー！よっしゃいくぞー！', ko: '아-! 욧샤 이쿠조-!', pre: true },
+        { b: 16, len: 2, ja: 'タイガー', ko: '타이가-' },
+        { b: 18, len: 2, ja: 'ファイヤー', ko: '파이야-' },
+        { b: 20, len: 2, ja: 'サイバー', ko: '사이바-' },
+        { b: 22, len: 2, ja: 'ファイバー', ko: '화이바-' },
+        { b: 24, len: 2, ja: 'ダイバー', ko: '다이바-' },
+        { b: 26, len: 2, ja: 'バイバー', ko: '바이바-' },
+        { b: 28, len: 4, ja: 'ジャージャー', ko: '쟈-쟈-' },
+      ],
+      tip: '앞부분 "아-! 욧샤 이쿠조-!"는 길게 끌어 박을 채우는 전진(前振り). 단어는 또박또박, 마지막 쟈-쟈-는 길게.',
+      confidence: 'cross',
+      sources: ['https://ameblo.jp/archangel-neo/entry-12881375852.html', 'https://seesaawiki.jp/idoljapan2010/d/MIX'],
+    },
+    {
+      id: 'japanese', name: 'ジャパニーズMIX', ko: '재패니즈 믹스', alias: '일본어 MIX · 세컨드 MIX',
+      kind: 'mix', lang: '일본어계', speed: 'normal', traits: ['basic', 'hype'],
+      positions: ['inter1', 'inter2'], bars: 8,
+      desc: '스탠다드 MIX를 한자어로 옮긴 버전. 1절 끝 간주에서 2절로 넘어갈 때 자주 쓰여 "세컨드 MIX"라고도 부른다.',
+      words: [
+        { b: 0,  len: 8, ja: 'もういっちょいくぞー！', ko: '모- 잇쵸 이쿠조-!', pre: true },
+        { b: 16, len: 2, ja: '虎（とら）', ko: '토라' },
+        { b: 18, len: 2, ja: '火（ひ）', ko: '히' },
+        { b: 20, len: 2, ja: '人造（じんぞう）', ko: '진조-' },
+        { b: 22, len: 2, ja: '繊維（せんい）', ko: '센이' },
+        { b: 24, len: 2, ja: '海女（あま）', ko: '아마' },
+        { b: 26, len: 2, ja: '振動（しんどう）', ko: '신도-' },
+        { b: 28, len: 4, ja: '化繊飛除去（かせんとびじょきょ）', ko: '카센 토비 죠쿄' },
+      ],
+      tip: '마지막 "카센 토비 죠쿄"를 빼먹으면 길이가 모자란다는 지적이 있음. 지하 현장에서는 이 부분을 줄여 원장(園長) MIX로 잇는 경우도 많다.',
+      confidence: 'cross',
+      sources: ['https://ameblo.jp/archangel-neo/entry-12881375852.html', 'https://note.com/proper_okapi6754/n/nb93882f27246'],
+    },
+    {
+      id: 'ainu', name: 'アイヌMIX', ko: '아이누 믹스', alias: '서드 MIX',
+      kind: 'mix', lang: '아이누어계', speed: 'normal', traits: ['basic', 'hype'],
+      positions: ['inter2'], bars: 8,
+      desc: '같은 뜻을 아이누어로 옮긴 버전. 세 번째 간주가 있는 곡에서만 쓰여 "서드 MIX"라고 부른다. 영어→일본어→아이누어 순서가 기본.',
+      words: [
+        { b: 0,  len: 8, ja: 'さらにいくぞー！', ko: '사라니 이쿠조-!', pre: true },
+        { b: 16, len: 2, ja: 'チャペ', ko: '챠페' },
+        { b: 18, len: 2, ja: 'アペ', ko: '아페' },
+        { b: 20, len: 2, ja: 'カラ', ko: '카라' },
+        { b: 22, len: 2, ja: 'キナ', ko: '키나' },
+        { b: 24, len: 2, ja: 'ララ', ko: '라라' },
+        { b: 26, len: 2, ja: 'トゥスケ', ko: '투스케' },
+        { b: 28, len: 4, ja: 'ミョーホントゥスケ', ko: '묘-혼 투스케' },
+      ],
+      tip: '구호 단어 자체는 이번 조사에서 원문으로 교차 확인하지 못했음 → 확인 필요. 전진(前振り) 문구도 현장마다 다름.',
+      confidence: 'unverified',
+      sources: ['https://taigakarafaiya.substack.com/p/in-progresscomplete-collection-of'],
+    },
+    {
+      id: 'encho', name: '園長MIX', ko: '원장 믹스', alias: '',
+      kind: 'mix', lang: '파생', speed: 'normal', traits: ['hype', 'speed'],
+      positions: ['intro'], bars: 4,
+      desc: '스탠다드 MIX 뒤에 이어 붙이는 4소절 구호. 12소절짜리 인트로에서 스탠다드(8소절)+원장(4소절)로 딱 맞게 채운다.',
+      words: [
+        { b: 0, len: 4, ja: 'ファイボー', ko: '파이보-' },
+        { b: 4, len: 4, ja: 'ワイパー', ko: '와이파-' },
+        { b: 8, len: 8, ja: '［以降 確認必要］', ko: '[이후 구호 확인 필요]' },
+      ],
+      tip: '"파이보 와이파"로 이어진다는 것까지만 확인됨. 전체 구호는 원문 확인 후 추가 예정.',
+      confidence: 'single',
+      sources: ['https://choconono.com/call-practice-entyou-mix/'],
+    },
+    {
+      id: 'kahen3', name: '可変三連MIX', ko: '가변 삼연 믹스', alias: '',
+      kind: 'mix', lang: '파생', speed: 'vary', traits: ['speed', 'hype'],
+      positions: ['intro', 'inter1'], bars: 16,
+      desc: '일본어·영어·원장 MIX 구절을 섞은 16소절 구호. "진조- 파이야 파이보 와이파"로 시작하고 끝의 "이엣타이가-"를 늘이거나 줄여 노래 시작에 맞춘다.',
+      words: [
+        { b: 0,  len: 8, ja: '人造ファイヤーファイボーワイパー', ko: '진조- 파이야- 파이보- 와이파-' },
+        { b: 8,  len: 48, ja: '［中間 確認必要］', ko: '[중간 구호 확인 필요]' },
+        { b: 56, len: 8, ja: 'イェッタイガー', ko: '이엣- 타이가-' },
+      ],
+      tip: '"이엣타이가-"의 끄는 길이로 노래 시작까지의 길이를 조절한다. 중간 구호는 원문 확인 필요.',
+      confidence: 'single',
+      sources: ['https://choconono.com/call-practice-kahen-sanren-mix/', 'https://note.com/kzy_galactica/n/n618a9d5d7a7b'],
+    },
+    {
+      id: 'ietiger', name: 'イェッタイガー（家虎）', ko: '이엣타이가 (이에토라)', alias: '',
+      kind: 'aino', lang: '파생', speed: 'normal', traits: ['hype', 'manner'],
+      positions: ['preChorus'], bars: 1,
+      desc: '사비 직전 박수 한 번 뒤에 "이엣타이가-!"를 외치는 짧은 콜. 노래 위에 겹치기 쉬워 금지하는 현장이 많다.',
+      words: [
+        { b: 0, len: 1, ja: '（パン）', ko: '(짝)' },
+        { b: 1, len: 3, ja: 'イェッタイガー！', ko: '이엣타이가-!' },
+      ],
+      tip: '그룹·공연장의 콜 규칙을 반드시 먼저 확인. 노래 가사를 덮지 않도록.',
+      confidence: 'single',
+      sources: ['https://choconono.com/call-practice-kahen-sanren-mix/'],
+    },
+    {
+      id: 'ppph', name: 'PPPH', ko: '피피피에이치', alias: '팡 파팡 휴',
+      kind: 'aino', lang: '의성어', speed: 'fast', traits: ['clap', 'basic'],
+      positions: ['any'], bars: 1,
+      desc: '손뼉과 외침을 합친 합의 손. "팡, 파팡, 휴!" 리듬을 반복한다. 업템포 곡의 A멜로·B멜로에서 자주 쓰인다.',
+      words: [
+        { b: 0,   len: 1,   ja: 'パン', ko: '팡(짝)' },
+        { b: 1,   len: 0.5, ja: 'パ',   ko: '파(짝)' },
+        { b: 1.5, len: 0.5, ja: 'パン', ko: '팡(짝)' },
+        { b: 2,   len: 2,   ja: 'ヒュー！', ko: '휴-!' },
+      ],
+      tip: '박 배치는 일반적인 예시. 곡의 드럼 패턴에 맞춰 조절.',
+      confidence: 'cross',
+      sources: ['https://www.weblio.jp/content/PPPH', 'https://ipsj.ixsq.nii.ac.jp/records/188588'],
+    },
+    {
+      id: 'uryaoi', name: 'うりゃおい', ko: '우랴오이', alias: '',
+      kind: 'aino', lang: '의성어', speed: 'normal', traits: ['clap', 'hype'],
+      positions: ['any'], bars: 2,
+      desc: '박에 맞춰 "우랴! 오이!"를 반복하는 합의 손. 간주나 반주 구간을 채울 때 쓴다.',
+      words: [
+        { b: 0, len: 1, ja: 'うりゃ！', ko: '우랴!' },
+        { b: 1, len: 1, ja: 'おい！',   ko: '오이!' },
+        { b: 2, len: 1, ja: 'うりゃ！', ko: '우랴!' },
+        { b: 3, len: 1, ja: 'おい！',   ko: '오이!' },
+        { b: 4, len: 1, ja: 'うりゃ！', ko: '우랴!' },
+        { b: 5, len: 1, ja: 'おい！',   ko: '오이!' },
+        { b: 6, len: 1, ja: 'うりゃ！', ko: '우랴!' },
+        { b: 7, len: 1, ja: 'おい！',   ko: '오이!' },
+      ],
+      tip: '이번 조사에서 출처 확인 못 함 → 확인 필요.',
+      confidence: 'unverified',
+      sources: [],
+    },
+    {
+      id: 'gachikoi', name: 'ガチ恋口上', ko: '가치코이 구상', alias: '찐사랑 구상',
+      kind: 'kojo', lang: '일본어계', speed: 'normal', traits: ['love', 'hype'],
+      positions: ['intro', 'inter1'], bars: 16,
+      desc: '아이돌에게 고백하는 문장을 끊어서 외치는 구상. 2013년 무렵 큐슈의 지하아이돌 팬에게서 시작돼 퍼졌다는 설이 일반적.',
+      words: [
+        { b: 0,  len: 4, ja: '言いたいことがあるんだよ！', ko: '이이타이 코토가 아룬다요!' },
+        { b: 4,  len: 4, ja: 'やっぱり（推し）はかわいいよ！', ko: '얍파리 (최애)와 카와이이요!' },
+        { b: 8,  len: 4, ja: '好き好き大好き やっぱ好き！', ko: '스키스키 다이스키 얍파 스키!' },
+        { b: 12, len: 4, ja: 'やっと見つけたお姫様', ko: '얏토 미츠케타 오히메사마' },
+        { b: 16, len: 4, ja: '俺が生まれてきた理由', ko: '오레가 우마레테 키타 리유-' },
+        { b: 20, len: 4, ja: 'それはお前に出会うため', ko: '소레와 오마에니 데아우 타메' },
+        { b: 24, len: 4, ja: '俺と一緒に人生歩もう', ko: '오레토 잇쇼니 진세- 아유모-' },
+        { b: 28, len: 4, ja: '世界で一番愛してる', ko: '세카이데 이치방 아이시테루' },
+        { b: 32, len: 4, ja: 'ア・イ・シ・テ・ル！', ko: '아·이·시·테·루!' },
+      ],
+      tip: '"세카이데 이치방 아이시테루"는 자료로 확인됨. 나머지 문장 순서는 현장마다 다를 수 있음(확인 필요). (최애) 자리에 멤버 이름을 넣는다.',
+      confidence: 'single',
+      sources: ['https://zh.moegirl.org.cn/en/Gachi%E6%81%8B%E5%8F%A3%E4%B8%8A'],
+    },
+    {
+      id: 'namecall', name: '名前コール', ko: '이름 콜', alias: '',
+      kind: 'aino', lang: '일본어계', speed: 'slow', traits: ['basic', 'love'],
+      positions: ['any'], bars: 2,
+      desc: '멤버 파트나 노래의 쉬는 박에 멤버 이름을 외치는 가장 단순한 콜. 입문자에게 추천.',
+      words: [
+        { b: 0, len: 4, ja: '（推し）ー！', ko: '(최애 이름)-!' },
+        { b: 4, len: 4, ja: '（推し）ー！', ko: '(최애 이름)-!' },
+      ],
+      tip: '이름은 해당 아이돌의 공식 애칭이 있으면 그걸 사용.',
+      confidence: 'unverified',
+      sources: [],
+    },
+    {
+      id: 'kecak', name: 'ケチャ', ko: '케챠', alias: '',
+      kind: 'action', lang: '-', speed: 'slow', traits: ['love', 'manner'],
+      positions: ['ochisabi'], bars: 4,
+      desc: '낙사비 등 조용한 구간에서 손을 아이돌 쪽으로 뻗어 흔드는 동작. 구호보다는 동작 중심.',
+      words: [
+        { b: 0, len: 16, ja: '（両手を推しへ向けて揺らす）', ko: '(양손을 최애 쪽으로 뻗어 흔들기)' },
+      ],
+      tip: '동작 설명은 일반 지식 기반(확인 필요). 앞사람 시야를 가리지 않게.',
+      confidence: 'unverified',
+      sources: [],
+    },
+  ];
+
+  /* 데모곡: 저작권 문제로 실제 곡 가사는 넣지 않고, 연습용 오리지널 가사를 사용.
+   * timeline: beat 기준. type 'lyric' | 'call' | 'section'
+   */
+  const SONGS = [
+    {
+      id: 'demo-starter', title: '첫 MIX 연습곡', artist: 'MIXCALL LAB 데모', bpm: 150,
+      youtubeId: '', ytOffset: 0, lengthBeats: 160, level: '입문',
+      tags: ['스탠다드', '재패니즈', 'PPPH'],
+      timeline: [
+        { beat: 0,   type: 'section', text: '인트로 (8소절)' },
+        { beat: 0,   type: 'call', mixId: 'standard' },
+        { beat: 32,  type: 'section', text: '1절 A멜로' },
+        { beat: 32,  type: 'lyric', text: '처음 만난 무대 위 반짝이던 너' },
+        { beat: 40,  type: 'call', mixId: 'ppph' },
+        { beat: 44,  type: 'lyric', text: '빛나는 조명 아래 나는 외쳐' },
+        { beat: 52,  type: 'call', mixId: 'ppph' },
+        { beat: 56,  type: 'section', text: '사비' },
+        { beat: 56,  type: 'lyric', text: '오늘 밤 이 순간을 잊지 않을게' },
+        { beat: 64,  type: 'lyric', text: '목소리 높여 너를 불러' },
+        { beat: 72,  type: 'section', text: '1절 끝 간주 (8소절)' },
+        { beat: 72,  type: 'call', mixId: 'japanese' },
+        { beat: 104, type: 'section', text: '2절' },
+        { beat: 104, type: 'lyric', text: '다시 시작되는 우리의 노래' },
+        { beat: 112, type: 'call', mixId: 'uryaoi' },
+        { beat: 120, type: 'lyric', text: '끝나지 않을 꿈을 꾸자' },
+        { beat: 128, type: 'section', text: '라스트 사비' },
+        { beat: 128, type: 'lyric', text: '오늘 밤 이 순간을 잊지 않을게' },
+        { beat: 136, type: 'lyric', text: '목소리 높여 너를 불러' },
+        { beat: 144, type: 'call', mixId: 'namecall' },
+      ],
+    },
+    {
+      id: 'demo-triple', title: '3간주 풀코스', artist: 'MIXCALL LAB 데모', bpm: 170,
+      youtubeId: '', ytOffset: 0, lengthBeats: 208, level: '중급',
+      tags: ['스탠다드', '원장', '재패니즈', '아이누'],
+      timeline: [
+        { beat: 0,   type: 'section', text: '인트로 (12소절)' },
+        { beat: 0,   type: 'call', mixId: 'standard' },
+        { beat: 32,  type: 'call', mixId: 'encho' },
+        { beat: 48,  type: 'section', text: '1절' },
+        { beat: 48,  type: 'lyric', text: '달려가 너에게 닿을 때까지' },
+        { beat: 56,  type: 'lyric', text: '멈추지 않는 비트 위에서' },
+        { beat: 64,  type: 'section', text: '1절 끝 간주' },
+        { beat: 64,  type: 'call', mixId: 'japanese' },
+        { beat: 96,  type: 'section', text: '2절' },
+        { beat: 96,  type: 'lyric', text: '숨이 차도 웃어 보일게' },
+        { beat: 104, type: 'lyric', text: '네가 있는 이곳이라면' },
+        { beat: 112, type: 'section', text: '2절 끝 간주' },
+        { beat: 112, type: 'call', mixId: 'ainu' },
+        { beat: 144, type: 'section', text: '낙사비' },
+        { beat: 144, type: 'lyric', text: '조용히 손을 뻗어 너에게' },
+        { beat: 144, type: 'call', mixId: 'kecak' },
+        { beat: 160, type: 'section', text: '라스트 사비' },
+        { beat: 160, type: 'lyric', text: '달려가 너에게 닿을 때까지' },
+        { beat: 168, type: 'lyric', text: '이 노래가 끝나지 않게' },
+        { beat: 176, type: 'call', mixId: 'ppph' },
+      ],
+    },
+    {
+      id: 'demo-love', title: '고백 구상 연습곡', artist: 'MIXCALL LAB 데모', bpm: 132,
+      youtubeId: '', ytOffset: 0, lengthBeats: 144, level: '입문',
+      tags: ['가치코이 구상', '이름 콜'],
+      timeline: [
+        { beat: 0,   type: 'section', text: '인트로 (구상)' },
+        { beat: 0,   type: 'call', mixId: 'gachikoi' },
+        { beat: 40,  type: 'section', text: '1절' },
+        { beat: 40,  type: 'lyric', text: '두근대는 마음 숨길 수 없어' },
+        { beat: 48,  type: 'call', mixId: 'namecall' },
+        { beat: 56,  type: 'lyric', text: '너의 이름을 부를게' },
+        { beat: 64,  type: 'section', text: '사비 직전' },
+        { beat: 68,  type: 'call', mixId: 'ietiger' },
+        { beat: 72,  type: 'section', text: '사비' },
+        { beat: 72,  type: 'lyric', text: '세상에서 제일 소중한 너' },
+        { beat: 80,  type: 'lyric', text: '오늘도 여기서 기다릴게' },
+        { beat: 88,  type: 'call', mixId: 'ppph' },
+        { beat: 96,  type: 'section', text: '라스트' },
+        { beat: 96,  type: 'lyric', text: '두근대는 마음 숨길 수 없어' },
+        { beat: 104, type: 'call', mixId: 'namecall' },
+      ],
+    },
+  ];
+
+  return { TRAITS, KINDS, SPEEDS, POSITIONS, MIXES, SONGS };
+})();
